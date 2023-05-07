@@ -5,6 +5,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -12,10 +15,12 @@ const usersRouter = require('./routes/users');
 const app = express();
 
 // Connect to MongoDB
-main().catch((err) => console.log(err));
-async function main() {
-  await mongoose.connect(process.env.mongodb);
-}
+mongoose.connect(process.env.mongodb, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'mongo connection error'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,6 +32,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Middleware for users sessions
+app.use(
+  session({
+    secret: process.env.secret,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.urlencoded({ extended: false }));
+
+// Routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
