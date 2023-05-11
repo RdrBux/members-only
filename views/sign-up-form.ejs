@@ -4,46 +4,85 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
     <title><%= title %></title>
   </head>
   <body>
-    <h1><%= title %></h1>
+    <nav class="navbar bg-primary-subtle">
+      <div class="container">
+        <a class="navbar-brand fs-3" href="/">Members Only</a>
+      </div>
+    </nav>
 
-    <form method="post">
-      <div>
-        <label for="fullname">Full name:</label>
-        <input
-          type="text"
-          value="<%= locals.user ? user.fullname : '' %>"
-          name="fullname"
-          required
-          id="fullname"
-        />
+    <div class="container">
+      <h1 class="text-center mt-4"><%= title %></h1>
+
+      <div class="row justify-content-center mt-4">
+        <form class="col-md-5 col-md-offset-5" method="post">
+          <div class="form-group">
+            <label for="fullname">Full name:</label>
+            <input
+              class="form-control <%= locals.errors?.some(error => error.path === 'fullname') ? 'is-invalid' : '' %>"
+              type="text"
+              value="<%= locals.user ? user.fullname : '' %>"
+              name="fullname"
+              required
+              id="fullname"
+            />
+            <div class="invalid-feedback">
+              <%= locals.errors?.find(error => error.path === 'fullname')?.msg
+              %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="username">Email:</label>
+            <input
+              class="form-control <%= locals.errors?.some(error => error.path === 'username') ? 'is-invalid' : '' %>"
+              type="email"
+              name="username"
+              id="email"
+              value="<%= locals.user ? user.username : '' %>"
+              required
+            />
+            <div class="invalid-feedback">
+              <%= locals.errors?.find(error => error.path === 'username')?.msg
+              %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input
+              class="form-control <%= locals.errors?.some(error => error.path === 'password') ? 'is-invalid' : '' %>"
+              type="password"
+              name="password"
+              id="password"
+              required
+            />
+            <div class="invalid-feedback">
+              <%= locals.errors?.find(error => error.path === 'password')?.msg
+              %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="repeat-password">Repeat password:</label>
+            <input
+              class="form-control <%= locals.errors?.some(error => error.path === 'repeat-password') ? 'is-invalid' : '' %>"
+              type="password"
+              name="repeat-password"
+              id="repeat-password"
+              required
+            />
+            <div class="invalid-feedback">
+              <%= locals.errors?.find(error => error.path ===
+              'repeat-password')?.msg %>
+            </div>
+          </div>
+          <button class="btn btn-primary mt-4">Create account</button>
+        </form>
       </div>
-      <div>
-        <label for="username">Email:</label>
-        <input
-          type="email"
-          name="username"
-          id="email"
-          value="<%= locals.user ? user.username : '' %>"
-          required
-        />
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required />
-      </div>
-      <div>
-        <label for="repeat-password">Repeat password:</label>
-        <input
-          type="password"
-          name="repeat-password"
-          id="repeat-password"
-          required
-        />
-      </div>
-      <button>Create account</button>
-    </form>
+    </div>
   </body>
 </html>

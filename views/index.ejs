@@ -5,23 +5,54 @@
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p><%= currentUser?.fullname %></p>
-    <p>Welcome to <%= title %></p>
+    <nav class="navbar bg-primary-subtle">
+      <div class="container">
+        <a class="navbar-brand fs-3" href="/">Members Only</a>
 
-    <% if (user) { %>
-    <h2>Welcome back, <%= user.fullname %></h2>
-    <a href="/log-out">LOG OUT</a>
-    <% } else { %>
-    <h2>please log in</h2>
-    <form action="/log-in" method="post">
-      <label for="username">Email</label>
-      <input name="username" type="email" />
-      <label for="password">Password</label>
-      <input name="password" type="password" />
-      <button>Log In</button>
-      <p>Don't have an account? <a href="/sign-up">Sign up</a></p>
-    </form>
-    <% } %>
+        <% if (user) { %>
+        <div>
+          <span class="navbar-text"
+            >Welcome back, <b><%= user.fullname %></b></span
+          >
+          <a class="btn btn-primary" href="/log-out">LOG OUT</a>
+        </div>
+        <% } else { %>
+        <div>
+          <form
+            class="row row-cols-lg-auto g-2 align-items-center"
+            action="/log-in"
+            method="post"
+          >
+            <div class="col-12">
+              <input
+                class="form-control"
+                name="username"
+                type="email"
+                placeholder="Email"
+              />
+            </div>
+            <div class="col-12">
+              <input
+                class="form-control"
+                name="password"
+                type="password"
+                placeholder="Password"
+              />
+            </div>
+            <div class="col-12">
+              <button class="btn btn-primary">Login</button>
+            </div>
+          </form>
+          <span>Don't have an account? <a href="/sign-up">Sign up</a></span>
+        </div>
+        <% } %>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1><%= title %></h1>
+      <p><%= currentUser?.fullname %></p>
+      <p>Welcome to <%= title %></p>
+    </div>
   </body>
 </html>

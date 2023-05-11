@@ -7,7 +7,7 @@ const User = require('../models/userModel');
 
 exports.user_sign_up_get = asyncHandler(async (req, res, next) => {
   res.render('sign-up-form', {
-    title: 'Sign Up',
+    title: 'Create a new account',
   });
 });
 
@@ -15,7 +15,7 @@ exports.user_sign_up_post = [
   body('fullname')
     .trim()
     .isLength({ min: 1, max: 100 })
-    .withMessage('Username is too long. (Max 100 characters)')
+    .withMessage('Full name is too long. (Max 100 characters)')
     .escape(),
 
   body('username')
@@ -41,9 +41,16 @@ exports.user_sign_up_post = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
+    const newUser = new User({
+      fullname: req.body.fullname,
+      username: req.body.username,
+      member: false,
+    });
+
     if (!errors.isEmpty()) {
       res.render('sign-up-form', {
         title: 'Sign Up',
+        user: newUser,
         errors: errors.array(),
       });
       return;
@@ -54,8 +61,13 @@ exports.user_sign_up_post = [
     }).exec();
     if (userExists) {
       res.render('sign-up-form', {
-        title: 'Sign Up',
-        errors: ['The entered email is already in use'],
+        title: 'Create a new account',
+        errors: [
+          {
+            path: 'username',
+            msg: 'The entered email is already in use',
+          },
+        ],
       });
       return;
     }
@@ -64,12 +76,7 @@ exports.user_sign_up_post = [
       if (err) {
         return next(err);
       } else {
-        const newUser = new User({
-          fullname: req.body.fullname,
-          username: req.body.username,
-          password: hashedPassword,
-          member: false,
-        });
+        newUser.password = hashedPassword;
         await newUser.save();
         res.redirect('/');
       }
@@ -79,7 +86,7 @@ exports.user_sign_up_post = [
 
 exports.user_login = passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/b',
+  failureRedirect: '/',
 });
 
 exports.user_logout = (req, res, next) => {
