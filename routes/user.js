@@ -5,7 +5,6 @@ const postController = require('../controllers/postController');
 const userController = require('../controllers/userController');
 
 /* GET home page. */
-router.get('/', postController.index);
 
 router.post('/log-in', userController.user_login);
 

@@ -113,7 +113,7 @@ exports.member_form_post = [
   body('key', 'Invalid key (Try something more feline)')
     .trim()
     .toLowerCase()
-    .matches('cat')
+    .isIn(['cat', 'admin'])
     .escape(),
 
   asyncHandler(async (req, res, next) => {
@@ -126,11 +126,22 @@ exports.member_form_post = [
       });
     }
 
-    try {
-      await User.findByIdAndUpdate(req.user._id, { member: true });
-      res.redirect('/member-form');
-    } catch (err) {
-      return next(err);
+    if (req.body.key === 'cat') {
+      try {
+        await User.findByIdAndUpdate(req.user._id, { member: true });
+        res.redirect('/member-form');
+      } catch (err) {
+        return next(err);
+      }
+    }
+
+    if (req.body.key === 'admin') {
+      try {
+        await User.findByIdAndUpdate(req.user._id, { admin: true });
+        res.redirect('/');
+      } catch (err) {
+        return next(err);
+      }
     }
   }),
 ];

@@ -99,6 +99,11 @@
                   %></small
                 >
               </p>
+              <% if (currentUser?.admin) { %>
+              <a href="/posts/<%= post._id %>" class="card-rext text-danger"
+                >Delete message</a
+              >
+              <% } %>
             </div>
           </div>
         </div>

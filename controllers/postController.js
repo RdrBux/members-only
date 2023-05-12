@@ -11,7 +11,6 @@ exports.index = asyncHandler(async (req, res, next) => {
 
   const alert = req.session.messages;
   req.session.messages = null;
-
   res.render('index', {
     title: 'Members Only',
     posts,
