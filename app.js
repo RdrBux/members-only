@@ -8,6 +8,8 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
+const compression = require('compression');
+const helmet = require('helmet');
 
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
@@ -23,6 +25,11 @@ mongoose.connect(process.env.mongodb, {
 });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongo connection error'));
+
+// Compression and Helmet
+app.use(compression());
+
+app.use(helmet());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
