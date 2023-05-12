@@ -78,7 +78,12 @@ exports.user_sign_up_post = [
       } else {
         newUser.password = hashedPassword;
         await newUser.save();
-        res.redirect('/');
+        req.login(newUser, (err) => {
+          if (err) {
+            return next(err);
+          }
+          return res.redirect('/');
+        });
       }
     });
   }),

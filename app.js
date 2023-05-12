@@ -29,7 +29,18 @@ db.on('error', console.error.bind(console, 'mongo connection error'));
 // Compression and Helmet
 app.use(compression());
 
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      'script-src': [
+        "'self'",
+        'code.jquery.com',
+        'cdn.jsdelivr.net',
+        "'unsafe-inline'",
+      ],
+    },
+  })
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -27,9 +27,9 @@ exports.new_message_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.new_message_post = [
-  body('title', 'Must add a title').trim().isLength({ min: 1 }).escape(),
+  body('title', 'Must add a title').trim().isLength({ min: 1 }),
 
-  body('content', 'Must add a message').trim().isLength({ min: 1 }).escape(),
+  body('content', 'Must add a message').trim().isLength({ min: 1 }),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
