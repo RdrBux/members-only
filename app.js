@@ -19,7 +19,7 @@ const User = require('./models/userModel');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(process.env.mongodb, {
+mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
 });
