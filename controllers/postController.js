@@ -9,9 +9,13 @@ exports.index = asyncHandler(async (req, res, next) => {
     .populate('user')
     .exec();
 
+  const alert = req.session.messages;
+  req.session.messages = null;
+
   res.render('index', {
     title: 'Members Only',
-    posts: posts,
+    posts,
+    alert,
   });
 });
 

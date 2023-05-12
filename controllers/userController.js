@@ -87,6 +87,7 @@ exports.user_sign_up_post = [
 exports.user_login = passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/',
+  failureMessage: true,
 });
 
 exports.user_logout = (req, res, next) => {
