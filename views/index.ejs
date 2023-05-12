@@ -8,53 +8,55 @@
     <title><%= title %></title>
   </head>
   <body>
-    <nav class="navbar bg-primary-subtle">
-      <div class="container">
-        <a class="navbar-brand fw-medium text-primary-emphasis fs-3" href="/"
-          >Members Only</a
-        >
-
-        <% if (currentUser) { %>
-        <div>
-          <span class="navbar-text"
-            >Welcome back, <b><%= currentUser.fullname %></b>.</span
+    <header>
+      <nav class="navbar bg-primary-subtle">
+        <div class="container">
+          <a class="navbar-brand fw-medium text-primary-emphasis fs-3" href="/"
+            >Members Only</a
           >
-          <a href="/log-out">LOG OUT</a>
-        </div>
-        <% } else { %>
-        <div>
-          <form
-            class="row row-cols-lg-auto g-2 align-items-center"
-            action="/log-in"
-            method="post"
-          >
-            <div class="col-12">
-              <input
-                class="form-control"
-                name="username"
-                type="email"
-                placeholder="Email"
-              />
-            </div>
-            <div class="col-12">
-              <input
-                class="form-control"
-                name="password"
-                type="password"
-                placeholder="Password"
-              />
-            </div>
-            <div class="col-12">
-              <button class="btn btn-primary">Login</button>
-            </div>
-          </form>
-          <span>Don't have an account? <a href="/sign-up">Sign up.</a></span>
-        </div>
-        <% } %>
-      </div>
-    </nav>
 
-    <div class="container">
+          <% if (currentUser) { %>
+          <div>
+            <span class="navbar-text"
+              >Welcome back, <b><%= currentUser.fullname %></b>.</span
+            >
+            <a href="/log-out">LOG OUT</a>
+          </div>
+          <% } else { %>
+          <div>
+            <form
+              class="row row-cols-lg-auto g-2 align-items-center"
+              action="/log-in"
+              method="post"
+            >
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="username"
+                  type="email"
+                  placeholder="Email"
+                />
+              </div>
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                />
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary">Login</button>
+              </div>
+            </form>
+            <span>Don't have an account? <a href="/sign-up">Sign up.</a></span>
+          </div>
+          <% } %>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container">
       <h1 class="text-center mt-4">Messages</h1>
 
       <% if (currentUser) { %>
@@ -64,14 +66,18 @@
         <% posts.map(post => { %>
         <div class="col">
           <div class="card">
-            <div class="card-header"><%= post.user.fullname %></div>
+            <div class="card-header">
+              <%= currentUser?.member ? post.user.fullname : 'Unknown author' %>
+            </div>
             <div class="card-body">
               <h5 class="card-title"><%= post.title %></h5>
               <p class="card-text"><%= post.content %></p>
               <p class="card-text">
                 <small class="text-body-secondary"
-                  ><%= post.createdAt.toLocaleTimeString() %> - <%=
-                  post.createdAt.toLocaleDateString() %></small
+                  ><%= currentUser?.member ?
+                  `${post.createdAt.toLocaleTimeString()} -
+                  ${post.createdAt.toLocaleDateString()}` : 'Unknown date'
+                  %></small
                 >
               </p>
             </div>
@@ -81,6 +87,13 @@
         <% }) %>
       </div>
       <% } %>
-    </div>
+    </main>
+
+    <footer class="mt-4" style="background-color: rgba(0, 0, 0, 0.15)">
+      <div class="container text-center p-3">
+        <b>Members Only™</b>. Become a <a href="/member-form">member</a> to see
+        messages' authors and dates.
+      </div>
+    </footer>
   </body>
 </html>

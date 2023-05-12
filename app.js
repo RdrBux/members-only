@@ -9,8 +9,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
 
 const User = require('./models/userModel');
@@ -87,9 +86,8 @@ app.use(function (req, res, next) {
 });
 
 // Routers
-app.use('/', indexRouter);
 app.use('/', postRouter);
-app.use('/users', usersRouter);
+app.use('/', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

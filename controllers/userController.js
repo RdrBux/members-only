@@ -97,3 +97,39 @@ exports.user_logout = (req, res, next) => {
     res.redirect('/');
   });
 };
+
+exports.member_form_get = asyncHandler(async (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    res.redirect('/sign-up');
+  }
+
+  res.render('member-form', {
+    title: 'Become a member',
+  });
+});
+
+exports.member_form_post = [
+  body('key', 'Invalid key (Try something more feline)')
+    .trim()
+    .toLowerCase()
+    .matches('cat')
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render('member-form', {
+        title: 'Become a member',
+        errors: errors.array(),
+      });
+    }
+
+    try {
+      await User.findByIdAndUpdate(req.user._id, { member: true });
+      res.redirect('/member-form');
+    } catch (err) {
+      return next(err);
+    }
+  }),
+];

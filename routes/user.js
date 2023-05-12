@@ -15,4 +15,8 @@ router.post('/sign-up', userController.user_sign_up_post);
 
 router.get('/log-out', userController.user_logout);
 
+router.get('/member-form', userController.member_form_get);
+
+router.post('/member-form', userController.member_form_post);
+
 module.exports = router;
