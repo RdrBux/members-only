@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <nav class="navbar bg-primary-subtle">
+      <div class="container">
+        <a class="navbar-brand fw-medium fs-3 text-primary-emphasis" href="/"
+          >Members Only</a
+        >
+        <div>
+          <span class="navbar-text"
+            >Welcome back, <b><%= currentUser.fullname %></b>.</span
+          >
+          <a href="/log-out">LOG OUT</a>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-5 col-md-offset-5">
+          <h1 class="mt-4">Remove message</h1>
+          <ul>
+            <li>
+              <p><b>Title:</b> <%= post.title %></p>
+            </li>
+            <li>
+              <p><b>Message:</b> <%= post.content %></p>
+            </li>
+          </ul>
+          <form class="mt-4" method="post">
+            <p>Are you sure you want to remove it?</p>
+            <div>
+              <button class="btn btn-danger">Remove message</button> or go back
+              <a href="/">home.</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

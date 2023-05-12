@@ -52,3 +52,29 @@ exports.new_message_post = [
     res.redirect('/');
   }),
 ];
+
+exports.remove_post_get = asyncHandler(async (req, res, next) => {
+  if (!req.user?.admin) {
+    res.redirect('/');
+  }
+
+  const post = await Post.findById(req.params.id).exec();
+
+  if (!post) {
+    res.redirect('/');
+  }
+
+  res.render('post_remove_form', {
+    title: `Remove message: ${post.title}`,
+    post,
+  });
+});
+
+exports.remove_post_post = asyncHandler(async (req, res, next) => {
+  if (!req.user?.admin) {
+    res.redirect('/');
+  }
+
+  await Post.findByIdAndDelete(req.params.id);
+  res.redirect('/');
+});
